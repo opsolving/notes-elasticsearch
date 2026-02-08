@@ -1,8 +1,8 @@
-# notes-elasticsearch
+# Elasticsearch Index Management
 
-## Tworzenie indeksów
+## Creating Indexes
 
-### Podstawowy indeks
+### Basic Index
 
 ```json
 PUT /my-index
@@ -21,7 +21,7 @@ PUT /my-index
 }
 ```
 
-### Indeks z analizatorem
+### Index with Custom Analyzer
 
 ```json
 PUT /my-index-with-analyzer
@@ -48,37 +48,37 @@ PUT /my-index-with-analyzer
 }
 ```
 
-### Sprawdzenie istnienia indeksu
+### Check Index Existence
 
 ```json
 HEAD /my-index
 ```
 
-### Lista wszystkich indeksów
+### List All Indexes
 
 ```json
 GET /_cat/indices?v
 ```
 
-### Usunięcie indeksu
+### Delete Index
 
 ```json
 DELETE /my-index
 ```
 
-### Pobierz mapowanie indeksu
+### Get Index Mapping
 
 ```json
 GET /my-index/_mapping
 ```
 
-### Pobierz ustawienia indeksu
+### Get Index Settings
 
 ```json
 GET /my-index/_settings
 ```
 
-### Aktualizacja ustawień indeksu
+### Update Index Settings
 
 ```json
 PUT /my-index/_settings
@@ -89,7 +89,7 @@ PUT /my-index/_settings
 }
 ```
 
-### Dodaj nowe pole do istniejącego mapowania
+### Add New Field to Existing Mapping
 
 ```json
 PUT /my-index/_mapping
@@ -102,7 +102,7 @@ PUT /my-index/_mapping
 
 ## Index Templates
 
-### Prosty index template
+### Simple Index Template
 
 ```json
 PUT /_index_template/my-template
@@ -125,13 +125,13 @@ PUT /_index_template/my-template
 }
 ```
 
-### Lista wszystkich templates
+### List All Templates
 
 ```json
 GET /_index_template
 ```
 
-### Usuń template
+### Delete Template
 
 ```json
 DELETE /_index_template/my-template
@@ -139,7 +139,7 @@ DELETE /_index_template/my-template
 
 ## Component Templates
 
-### Component template dla mappings
+### Component Template for Mappings
 
 ```json
 PUT /_component_template/my-mappings
@@ -156,7 +156,7 @@ PUT /_component_template/my-mappings
 }
 ```
 
-### Component template dla settings
+### Component Template for Settings
 
 ```json
 PUT /_component_template/my-settings
@@ -171,7 +171,7 @@ PUT /_component_template/my-settings
 }
 ```
 
-### Index template używający component templates
+### Index Template Using Component Templates
 
 ```json
 PUT /_index_template/combined-template
@@ -182,58 +182,9 @@ PUT /_index_template/combined-template
 }
 ```
 
-## ILM (Index Lifecycle Management)
+## Data Streams
 
-### ILM Policy
-
-```json
-PUT /_ilm/policy/my-lifecycle-policy
-{
-  "policy": {
-    "phases": {
-      "hot": {
-        "actions": {
-          "rollover": {
-            "max_size": "50GB",
-            "max_age": "30d"
-          }
-        }
-      },
-      "warm": {
-        "min_age": "7d",
-        "actions": {
-          "shrink": {
-            "number_of_shards": 1
-          },
-          "forcemerge": {
-            "max_num_segments": 1
-          }
-        }
-      },
-      "cold": {
-        "min_age": "30d",
-        "actions": {
-          "freeze": {}
-        }
-      },
-      "delete": {
-        "min_age": "90d",
-        "actions": {
-          "delete": {}
-        }
-      }
-    }
-  }
-}
-```
-
-### Lista ILM policies
-
-```json
-GET /_ilm/policy
-```
-
-### Component template z ILM
+### Component Template with ILM
 
 ```json
 PUT _component_template/logs-mappings
@@ -253,7 +204,7 @@ PUT _component_template/logs-mappings
 }
 ```
 
-### Index template dla data streams
+### Index Template for Data Streams
 
 ```json
 PUT _index_template/logs-template
@@ -265,7 +216,7 @@ PUT _index_template/logs-template
 }
 ```
 
-### Tworzenie data stream
+### Create Data Stream
 
 ```json
 PUT _data_stream/logs-app
@@ -273,7 +224,7 @@ PUT _data_stream/logs-app
 
 ## Aliases
 
-### Utwórz alias
+### Create Alias
 
 ```json
 POST /_aliases
@@ -289,7 +240,7 @@ POST /_aliases
 }
 ```
 
-### Alias z filtrem
+### Alias with Filter
 
 ```json
 POST /_aliases
@@ -308,13 +259,13 @@ POST /_aliases
 }
 ```
 
-### Lista aliasów
+### List Aliases
 
 ```json
 GET /_cat/aliases?v
 ```
 
-### Usuń alias
+### Delete Alias
 
 ```json
 POST /_aliases
@@ -332,7 +283,7 @@ POST /_aliases
 
 ## Reindex
 
-### Podstawowy reindex
+### Basic Reindex
 
 ```json
 POST /_reindex
@@ -346,7 +297,7 @@ POST /_reindex
 }
 ```
 
-### Reindex z query
+### Reindex with Query
 
 ```json
 POST /_reindex
@@ -367,7 +318,7 @@ POST /_reindex
 }
 ```
 
-### Reindex z transformacją
+### Reindex with Transformation
 
 ```json
 POST /_reindex
@@ -386,19 +337,19 @@ POST /_reindex
 
 ## Index Stats
 
-### Statystyki indeksu
+### Index Statistics
 
 ```json
 GET /my-index/_stats
 ```
 
-### Rozmiar indeksu
+### Index Size
 
 ```json
 GET /_cat/indices/my-index?v&h=index,store.size,pri.store.size
 ```
 
-### Liczba dokumentów
+### Document Count
 
 ```json
 GET /my-index/_count
